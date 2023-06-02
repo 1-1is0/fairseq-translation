@@ -81,8 +81,6 @@ class LSTMModel(FairseqEncoderDecoderModel):
         parser.add_argument('--decoder-dropout-out', type=float, metavar='D',
                             help='dropout probability for decoder output')
 
-        parser.add_argument('--freeze', type=bool, default=True,
-                            help='freeze layers')
         # fmt: on
 
     @classmethod
@@ -191,15 +189,12 @@ class LSTMModel(FairseqEncoderDecoderModel):
             residuals=False,
         )
 
-        if args.freeze:
-            print("####    FREEZE     ####")
-            for p in encoder.parameters():
-                p.requires_grad = False
+        print("####    FREEZE     ####")
+        for p in encoder.parameters():
+            p.requires_grad = False
 
-            for p in decoder.parameters():
-                p.requires_grad = False
-        else:
-            print("####    NOT FREEZE     ####")
+        for p in decoder.parameters():
+            p.requires_grad = False
 
         return cls(encoder, decoder)
 
@@ -917,7 +912,6 @@ def base_architecture(args):
     args.adaptive_softmax_cutoff = getattr(
         args, "adaptive_softmax_cutoff", "10000,50000,200000"
     )
-    args.freeze_layers = getattr(args, "freeze", False)
 
 
 @register_model_architecture("lstm", "lstm_wiseman_iwslt_de_en")
