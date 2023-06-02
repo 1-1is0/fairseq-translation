@@ -917,7 +917,7 @@ def base_architecture(args):
     args.adaptive_softmax_cutoff = getattr(
         args, "adaptive_softmax_cutoff", "10000,50000,200000"
     )
-    args.freeze_layers = getattr(args, "freeze_layers", False)
+    args.freeze_layers = getattr(args, "freeze", False)
 
 
 @register_model_architecture("lstm", "lstm_wiseman_iwslt_de_en")
